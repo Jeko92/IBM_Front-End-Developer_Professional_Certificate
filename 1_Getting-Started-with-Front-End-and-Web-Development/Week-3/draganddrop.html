@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drag and Drop API Demo</title>
+    <link rel="shortcut icon" href="#" />
+    <style>
+      .abc {
+        float: left;
+        background-color: yellow;
+        border-radius: 5px;
+        margin: 5px;
+        padding: 5px;
+      }
+
+      .xyz {
+        width: 200px;
+        height: 200px;
+        border-radius: 25px;
+        padding: 50px;
+        margin: 0 auto;
+      }
+
+      .main {
+        border-radius: 20px;
+        border: 2px solid black;
+        font-family: "Helvetica Neue", Helvetica, Arial;
+        margin: 0 auto;
+        width: 70%;
+      }
+
+      table tr td {
+        text-align: center;
+        padding: 0;
+      }
+
+      #gobackbtn {
+        display: block;
+        width: 10%;
+        margin: 1rem auto;
+        font-size: 2rem;
+        text-decoration: none;
+        color: tomato;
+        background: #617b78;
+        text-align: center;
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+      }
+    </style>
+  </head>
+  <body onload="populate()">
+    <div class="main">
+      <h1 style="color: darkslategray; text-align: center">
+        Can you identify the frontend and backend technologies?
+      </h1>
+      <table border="0" align="center">
+        <tr>
+          <td colspan="2">
+            Drag and drop the below terms into the correct bins
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2"><span id="options"></span></td>
+        </tr>
+        <tr>
+          <td id="category1"></td>
+          <td id="category2"></td>
+        </tr>
+        <tr>
+          <td>
+            <div
+              id="category1values"
+              ondrop="drop(event)"
+              ondragover="allowDrop(event)"
+              style="background-color: goldenrod"
+              class="xyz"
+            ></div>
+          </td>
+          <td>
+            <div
+              id="category2values"
+              ondrop="drop(event)"
+              ondragover="allowDrop(event)"
+              style="background-color: darkslategray"
+              class="xyz"
+            ></div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <br />
+            <br />
+            <button onclick="getscore()">
+              <font size="5">Check your score </font></button
+            ><font size="5">
+              &nbsp;&nbsp; Score <output id="score">0</output></font
+            >
+            <br />
+            <br />
+            <br />
+            <button onclick="location.reload()">Start Over</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <script>
+      //----------------------------------------------------------------------------
+      input = {
+        category1: "Frontent Technologies",
+        category2: "Backend Technoologies",
+        category1values: ["HTML5", "JQuery", "CSS", "JavaScript", "Angular"],
+        category2values: ["Java", "Python", "Database", "Linux", "node.js"],
+      };
+      //----------------------------------------------------------------------------
+      result = { category1values: [], category2values: [] };
+      const shuffle = (array) => {
+        let currentIndex = array.length,
+          temporaryValue,
+          randomIndex;
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+          // Pick a remaining element...
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex -= 1;
+
+          // And swap it with the current element.
+          temporaryValue = array[currentIndex];
+          array[currentIndex] = array[randomIndex];
+          array[randomIndex] = temporaryValue;
+        }
+
+        return array;
+      };
+
+      const allowDrop = (ev) => {
+        ev.preventDefault();
+      };
+
+      const drag = (ev) => {
+        ev.dataTransfer.setData("text", ev.target.id);
+        console.log(ev.target.id);
+      };
+
+      const drop = (ev) => {
+        ev.preventDefault();
+        let data = ev.dataTransfer.getData("text");
+        ev.target.appendChild(document.getElementById(data));
+        console.log(ev.target.id);
+        if (ev.target.id === "category1values") {
+          let idx = result["category2values"].indexOf(data);
+          if (idx != -1) {
+            result["category2values"].splice(idx, 1);
+          }
+        } else if (ev.target.id === "category2values") {
+          let idx = result["category1values"].indexOf(data);
+          if (idx != -1) {
+            result["category1values"].splice(idx, 1);
+          }
+        }
+        result[ev.target.id].push(data);
+      };
+
+      const populate = () => {
+        document.getElementById(
+          "category1"
+        ).innerHTML = `<strong>${input.category1}</strong>`;
+        document.getElementById(
+          "category2"
+        ).innerHTML = `<strong>${input.category2}</strong>`;
+        let j = document.getElementById("options");
+        let x = input.category1values;
+        let y = input.category2values;
+        let bin = shuffle(x.concat(y));
+        for (let i = 0; i < bin.length; i++) {
+          let ele = `<button draggable="true" ondragstart="drag(event)" class="abc" id="${bin[i]}">${bin[i]}</button>`;
+          j.innerHTML += ele;
+        }
+      };
+
+      const contains = (myarray, ele) => {
+        // return myarray.indexOf(ele) > -1;
+        if (myarray.indexOf(ele) > -1) {
+          return true;
+        } else {
+          return false;
+        }
+      };
+
+      const getscore = () => {
+        let score = 0;
+
+        let y = input.category1values;
+        let x = result.category1values;
+
+        for (let i = 0; i < y.length; i++) {
+          if (contains(x, y[i])) {
+            score += 1;
+          }
+        }
+        let y2 = input.category2values;
+        let x2 = result.category2values;
+
+        for (let i = 0; i < y2.length; i++) {
+          if (contains(x2, y2[i])) {
+            score += 1;
+          }
+        }
+        score = (score / 10) * 100;
+        document.getElementById("score").value = `${score} %`;
+      };
+    </script>
+    <a
+      id="gobackbtn"
+      href="https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-CD0101EN-SkillsNetwork/labs/demos/demo2-instructions.md.html"
+      >Back</a
+    >
+  </body>
+</html>
