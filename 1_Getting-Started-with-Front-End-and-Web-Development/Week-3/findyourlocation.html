@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Using Geolocation API in Web Apps</title>
+    <link rel="shortcut icon" href="#" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script>
+      let output = document.getElementById("output");
+      const geolocation = () => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(displayPosition);
+        } else {
+          alert("Your browser does not support Geolocation API.");
+        }
+      };
+
+      const displayPosition = (position) => {
+        let latitude = position.coords.latitude;
+        let longitude = position.coords.longitude;
+
+        let output = `<br>Your current location details<br> Latitude: ${latitude} <br> Longitude: ${longitude}`;
+        document.getElementById("output").innerHTML = output;
+        let map = L.map("mapurl").setView([latitude, longitude], 13);
+
+        L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }).addTo(map);
+
+        L.marker([latitude, longitude]).addTo(map);
+      };
+    </script>
+    <style>
+      #gobackbtn {
+        display: block;
+        width: 10%;
+        margin: 1rem auto;
+        font-size: 2rem;
+        text-decoration: none;
+        color: tomato;
+        background: #617b78;
+        text-align: center;
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div align="center">
+      <div
+        style="
+          font-family: sans-serif;
+          background-color: #f8f8f8;
+          width: 50%;
+          border: 1px solid;
+        "
+      >
+        <h1>Find your location</h1>
+        HTML5 offers some cool features. <br />
+        One of them is geolocation API. <br />
+        This allows anyone to easily find out their current location(lattitude
+        and longitude). <br />
+        Try it out here. <br /><br />
+        <button style="background-color: coral" onclick="geolocation()">
+          <h2>Show my location</h2></button
+        ><br />
+        <span id="output"></span><br /><br />
+        <span
+          id="mapurl"
+          style="inline-size: 75%; min-block-size: 10rem; display: block"
+        ></span
+        ><br /><br />
+      </div>
+    </div>
+    <a
+      id="gobackbtn"
+      href="https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-CD0101EN-SkillsNetwork/labs/demos/demo1-instructions.md.html"
+      >Back</a
+    >
+  </body>
+</html>
