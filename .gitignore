@@ -3,3 +3,6 @@
 
 # OS folders
 .DS_Store
+
+# bootstrap
+**/bootstrap-5.3.3-dist/
