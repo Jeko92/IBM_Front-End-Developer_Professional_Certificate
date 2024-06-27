@@ -98,3 +98,4 @@ state.CartValue = totalExpenses;
         </AppContext.Provider>
     );
 };
+
