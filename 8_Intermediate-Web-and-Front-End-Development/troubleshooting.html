@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Working with Chrome DevTools</title>
+    <link rel="shortcut icon" href="#" />
+  </head>
+  <body>
+    <h1>Welcome to Chrome DevTools Lab</h1>
+    <ul>
+      <li>Michelangelo</li>
+      <li>Raphael</li>
+    </ul>
+    <p style="white-space: pre">
+      "To be, or not to be: that is the question: Whether 'tis nobler in the
+      mind to suffer The slings and arrows of outrageous fortune, Or to take
+      arms against a sea of troubles, And by opposing end them? To die: to
+      sleep; No more; and by a sleep to say we end The heart-ache and the
+      thousand natural shocks That flesh is heir to, 'tis a consummation
+      Devoutly to be wish'd. To die, to sleep; To sleep: perchance to dream: ay,
+      there's the rub; For in that sleep of death what dreams may come When we
+      have shuffled off this mortal coil, Must give us pause: there's the
+      respect That makes calamity of so long life;" - Hamlet, Act III, Scene I
+    </p>
+    <ul>
+      <li>Eggs</li>
+      <li>Milk</li>
+      <li>Bread</li>
+      <li>Cereal</li>
+    </ul>
+    <div>
+        <label for="num1">Number 1</label>
+        <input placeholder="Number 1" id="num1" />
+        <label for="num2">Number 2</label>
+        <input placeholder="Number 2" id="num2" />
+        <button onClick="calculateSum()">Add Number 1 and Number 2</button>
+        <p id="calculatorOutput"></p>
+      </div>
+    <script type="text/javascript">
+      console.log("Hello Console!");
+      console.log("Hello Console!");
+      const h1 = document.querySelector("h1");
+      console.log(h1.textContent);
+      //console.assert(document.querySelector("h2"), "h2 not found!");
+
+      function calculateSum() {
+        var inputs = document.querySelectorAll("input");
+        var addend1 = inputs[0].value;
+        var addend2 = inputs[1].value;
+        var sum = parseInt(addend1) + parseInt(addend2);
+        var label = document.getElementById("calculatorOutput");
+        label.textContent = addend1 + " + " + addend2 + " = " + sum;
+      }
+    </script>
+  </body>
+</html>
